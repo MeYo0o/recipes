@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:recipes/models/ingredient.dart';
 import 'package:recipes/models/recipe.dart';
 
 class RecipeDetail extends StatefulWidget {
@@ -11,7 +12,7 @@ class RecipeDetail extends StatefulWidget {
 }
 
 class _RecipeDetailState extends State<RecipeDetail> {
-  // TODO: Add _sliderVal here
+  int _sliderVal = 1;
   @override
   Widget build(BuildContext context) {
     //1
@@ -47,8 +48,40 @@ class _RecipeDetailState extends State<RecipeDetail> {
                 fontSize: 18.0,
               ),
             ),
-            // TODO: Add Expanded
-            // TODO: Add Slider() here
+            Expanded(
+              child: ListView.builder(
+                padding: const EdgeInsets.all(7.0),
+                itemCount: widget.recipe.ingredients.length,
+                itemBuilder: (context, index) {
+                  final Ingredient ingredient =
+                      widget.recipe.ingredients[index];
+
+                  //9
+                  return Text(
+                      '${ingredient.quantity * _sliderVal} ${ingredient.measure} ${ingredient.name}');
+                },
+              ),
+            ),
+
+            Slider(
+              //10
+              min: 1,
+              max: 10,
+              divisions: 9,
+              //11
+              label: '${_sliderVal * widget.recipe.servings} servings',
+              //12
+              value: _sliderVal.toDouble(),
+              //13
+              onChanged: (value) {
+                setState(() {
+                  _sliderVal = value.toInt();
+                });
+              },
+              //14
+              activeColor: Colors.green,
+              inactiveColor: Colors.grey.shade300,
+            ),
           ],
         ),
       ),
