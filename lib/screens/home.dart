@@ -37,7 +37,6 @@ class _HomeState extends State<Home> {
           style: extensionTheme(context).textTheme.headline6,
         ),
       ),
-      // TODO: Show selected tab
       body: Center(
         child: pages[_selectedIndex],
       ),
