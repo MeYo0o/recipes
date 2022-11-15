@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../widgets/card2.dart';
 import '../extensions/stateful_extension.dart';
 import '../widgets/card1.dart';
+import '../widgets/card3.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -16,8 +17,7 @@ class _HomeState extends State<Home> {
   List<Widget> pages = [
     const Card1(),
     const Card2(),
-    // TODO: Replace with Card3
-    Container(color: Colors.blue),
+    const Card3(),
   ];
 
   //change selected Tab
