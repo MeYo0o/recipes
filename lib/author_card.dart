@@ -22,6 +22,37 @@ class AuthorCard extends StatefulWidget {
 
 class _AuthorCardState extends State<AuthorCard> {
   bool isFavorite = false;
+
+  @override
+  void initState() {
+    super.initState();
+    print('initState gets called');
+  }
+
+  @override
+  void didChangeDependencies() {
+    print('didChangeDependencies gets called');
+    super.didChangeDependencies();
+  }
+
+  @override
+  void didUpdateWidget(covariant AuthorCard oldWidget) {
+    print('didUpdateWidget gets called');
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
+  void deactivate() {
+    print('deactivate gets called');
+    super.deactivate();
+  }
+
+  @override
+  void dispose() {
+    print('dispose gets called');
+    super.dispose();
+  }
+
   // 2
   @override
   Widget build(BuildContext context) {
