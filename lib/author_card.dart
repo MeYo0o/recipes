@@ -26,30 +26,30 @@ class _AuthorCardState extends State<AuthorCard> {
   @override
   void initState() {
     super.initState();
-    print('initState gets called');
+    debugPrint('initState gets called');
   }
 
   @override
   void didChangeDependencies() {
-    print('didChangeDependencies gets called');
+    debugPrint('didChangeDependencies gets called');
     super.didChangeDependencies();
   }
 
   @override
   void didUpdateWidget(covariant AuthorCard oldWidget) {
-    print('didUpdateWidget gets called');
+    debugPrint('didUpdateWidget gets called');
     super.didUpdateWidget(oldWidget);
   }
 
   @override
   void deactivate() {
-    print('deactivate gets called');
+    debugPrint('deactivate gets called');
     super.deactivate();
   }
 
   @override
   void dispose() {
-    print('dispose gets called');
+    debugPrint('dispose gets called');
     super.dispose();
   }
 
