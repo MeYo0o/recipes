@@ -15,10 +15,13 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
   flutter_lints: ^2.0.1
 
 flutter:
   uses-material-design: true
   assets:
     - assets/
+    - assets/food_pics/
+    - assets/magazine_pics/
+    - assets/sample_data/
+    - assets/profile_pics/

@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'fooderlich_theme.dart';
 
+import '../fooderlich_theme.dart';
 import 'circle_image.dart';
 
 class AuthorCard extends StatefulWidget {
-  // 1
   final String authorName;
   final String title;
   final ImageProvider? imageProvider;
@@ -17,43 +16,12 @@ class AuthorCard extends StatefulWidget {
   });
 
   @override
-  State<AuthorCard> createState() => _AuthorCardState();
+  AuthorCardState createState() => AuthorCardState();
 }
 
-class _AuthorCardState extends State<AuthorCard> {
-  bool isFavorite = false;
+class AuthorCardState extends State<AuthorCard> {
+  bool _isFavorited = false;
 
-  @override
-  void initState() {
-    super.initState();
-    debugPrint('initState gets called');
-  }
-
-  @override
-  void didChangeDependencies() {
-    debugPrint('didChangeDependencies gets called');
-    super.didChangeDependencies();
-  }
-
-  @override
-  void didUpdateWidget(covariant AuthorCard oldWidget) {
-    debugPrint('didUpdateWidget gets called');
-    super.didUpdateWidget(oldWidget);
-  }
-
-  @override
-  void deactivate() {
-    debugPrint('deactivate gets called');
-    super.deactivate();
-  }
-
-  @override
-  void dispose() {
-    debugPrint('dispose gets called');
-    super.dispose();
-  }
-
-  // 2
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -84,15 +52,12 @@ class _AuthorCardState extends State<AuthorCard> {
             ],
           ),
           IconButton(
-            icon: Icon(
-              isFavorite ? Icons.favorite : Icons.favorite_border,
-            ),
+            icon: Icon(_isFavorited ? Icons.favorite : Icons.favorite_border),
             iconSize: 30,
-            color: Colors.red,
+            color: Colors.red[400],
             onPressed: () {
-              //3
               setState(() {
-                isFavorite = !isFavorite;
+                _isFavorited = !_isFavorited;
               });
             },
           ),
