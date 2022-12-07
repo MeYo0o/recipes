@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'screens/recipes_screen.dart';
 
 import 'screens/explore_screen.dart';
+import 'screens/recipes_screen.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -14,8 +14,9 @@ class HomeState extends State<Home> {
   int _selectedIndex = 0;
 
   static List<Widget> pages = <Widget>[
-    const ExploreScreen(),
+    ExploreScreen(),
     RecipesScreen(),
+    // TODO: Replace with grocery screen
     Container(color: Colors.blue),
   ];
 
@@ -27,6 +28,7 @@ class HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    // TODO: Wrap inside a Consumer Widget
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -39,7 +41,7 @@ class HomeState extends State<Home> {
         selectedItemColor: Theme.of(context).textSelectionTheme.selectionColor,
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
-        items: const <BottomNavigationBarItem>[
+        items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.explore),
             label: 'Explore',
