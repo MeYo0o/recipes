@@ -2,27 +2,22 @@ import 'package:flutter/material.dart';
 
 import '../api/mock_fooderlich_service.dart';
 import '../components/components.dart';
-import '../models/simple_recipe.dart';
+import '../models/models.dart';
 
 class RecipesScreen extends StatelessWidget {
-  RecipesScreen({super.key});
+  final exploreService = MockFooderlichService();
 
-  final mockService = MockFooderlichService();
+  RecipesScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: mockService.getRecipes(),
+      future: exploreService.getRecipes(),
       builder: (context, AsyncSnapshot<List<SimpleRecipe>> snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
-          final recipes = snapshot.data ?? [];
-          return RecipesGridView(
-            recipes: recipes,
-          );
+          return RecipesGridView(recipes: snapshot.data ?? []);
         } else {
-          return const Center(
-            child: CircularProgressIndicator.adaptive(),
-          );
+          return const Center(child: CircularProgressIndicator());
         }
       },
     );
