@@ -7,7 +7,7 @@ enum Importance {
   high,
 }
 
-class GroceryItem {
+class GroceryItem  {
   // 2
   final String id;
   // 3
@@ -17,7 +17,7 @@ class GroceryItem {
   final int quantity;
   final DateTime date;
   final bool isComplete;
-  GroceryItem({
+  const GroceryItem({
     required this.id,
     required this.name,
     required this.importance,
@@ -46,4 +46,6 @@ class GroceryItem {
         date: date ?? this.date,
         isComplete: isComplete ?? this.isComplete);
   }
+
+  
 }

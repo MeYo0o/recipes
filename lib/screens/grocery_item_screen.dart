@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:uuid/uuid.dart';
 
+import '../components/grocery_tile.dart';
 import '../models/grocery_item.dart';
 
 const List<Importance> importanceList = [
@@ -105,7 +107,26 @@ class _GroceryItemScreenState extends State<GroceryItemScreen> {
         actions: [
           IconButton(
             onPressed: () {
-              // TODO: Add callback handler
+              final groceryItem = GroceryItem(
+                id: widget.originalItem?.id ?? const Uuid().v1(),
+                name: _name,
+                importance: _importance,
+                color: _currentColor,
+                quantity: _currentSliderValue,
+                date: DateTime(
+                  _dueDate.year,
+                  _dueDate.month,
+                  _dueDate.day,
+                  _timeOfDay.hour,
+                  _timeOfDay.minute,
+                ),
+              );
+
+              if (widget.isUpdating) {
+                widget.onUpdate(groceryItem);
+              } else {
+                widget.onCreate(groceryItem);
+              }
             },
             icon: const Icon(Icons.check),
           ),
@@ -116,22 +137,29 @@ class _GroceryItemScreenState extends State<GroceryItemScreen> {
         child: ListView(
           children: [
             buildNameField(),
-
             buildImportanceField(),
-
             buildDateField(),
-
             buildTimeField(),
-
             const SizedBox(height: 10.0),
-
             buildColorPicker(),
-
             const SizedBox(height: 10.0),
-
             buildQuantityField(),
-
-            // TODO: Add Grocery Tile
+            GroceryTile(
+              groceryItem: GroceryItem(
+                id: 'Preview Mode',
+                name: _name,
+                importance: _importance,
+                color: _currentColor,
+                quantity: _currentSliderValue,
+                date: DateTime(
+                  _dueDate.year,
+                  _dueDate.month,
+                  _dueDate.day,
+                  _timeOfDay.hour,
+                  _timeOfDay.minute,
+                ),
+              ),
+            ),
           ],
         ),
       ),

@@ -14,14 +14,13 @@ class GroceryManager extends ChangeNotifier {
     notifyListeners();
   }
 
-  void deleteItem(GroceryItem item) {
-    _groceryItems.remove(item);
+  void deleteItem(int index) {
+    _groceryItems.removeAt(index);
     notifyListeners();
   }
 
-  void updateItem(GroceryItem item) {
-    final itemIndex = _groceryItems.indexOf(item);
-    _groceryItems[itemIndex] = item;
+  void updateItem(GroceryItem item, int index) {
+    _groceryItems[index] = item;
     notifyListeners();
   }
 
