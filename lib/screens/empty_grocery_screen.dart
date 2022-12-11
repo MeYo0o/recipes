@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
-import '../providers/tab_manager.dart';
 
 class EmptyGroceryScreen extends StatelessWidget {
   const EmptyGroceryScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(30),
+      padding: const EdgeInsets.all(30.0),
       child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -29,17 +27,14 @@ class EmptyGroceryScreen extends StatelessWidget {
               'Tap the + button to write them down!',
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 5.0),
             MaterialButton(
               textColor: Colors.white,
-              color: Colors.green,
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(30),
-                ),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30.0),
               ),
+              color: Colors.green,
               onPressed: () {
-                Provider.of<TabManager>(context, listen: false).goToRecipes();
+                // TODO: Go to recipes
               },
               child: const Text('Browse Recipes'),
             ),

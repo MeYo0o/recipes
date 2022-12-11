@@ -2,34 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../models/models.dart';
-import 'empty_grocery_screen.dart';
-import 'grocery_item_screen.dart';
-import 'grocery_list_screen.dart';
+import 'screens.dart';
 
 class GroceryScreen extends StatelessWidget {
   const GroceryScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        child: const Icon(
-          Icons.add,
-        ),
+        child: const Icon(Icons.add),
         onPressed: () {
-          final groceryManager =
-              Provider.of<GroceryManager>(context, listen: false);
-
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => GroceryItemScreen(
-                onCreate: (item) {
-                  groceryManager.addItem(item);
-                  Navigator.of(context).pop();
-                },
-                onUpdate: (item) {},
-              ),
-            ),
-          );
+          // TODO: Create New Item
         },
       ),
       body: buildGroceryScreen(),
@@ -38,13 +22,9 @@ class GroceryScreen extends StatelessWidget {
 
   Widget buildGroceryScreen() {
     return Consumer<GroceryManager>(
-      builder: (
-        context,
-        groceryManager,
-        child,
-      ) {
-        if (groceryManager.groceryItems.isNotEmpty) {
-          return GroceryListScreen(manager: groceryManager);
+      builder: (context, manager, child) {
+        if (manager.groceryItems.isNotEmpty) {
+          return GroceryListScreen(manager: manager);
         } else {
           return const EmptyGroceryScreen();
         }

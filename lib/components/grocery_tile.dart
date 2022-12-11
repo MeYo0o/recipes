@@ -5,40 +5,37 @@ import 'package:intl/intl.dart';
 import '../models/grocery_item.dart';
 
 class GroceryTile extends StatelessWidget {
-  GroceryTile({super.key, 
-    required this.groceryItem,
-    this.onComplete,
-  }) : textDecoration = groceryItem.isComplete
-            ? TextDecoration.lineThrough
-            : TextDecoration.none;
-
-  final GroceryItem groceryItem;
+  final GroceryItem item;
   final Function(bool?)? onComplete;
   final TextDecoration textDecoration;
+
+  GroceryTile({
+    super.key,
+    required this.item,
+    this.onComplete,
+  }) : textDecoration =
+            item.isComplete ? TextDecoration.lineThrough : TextDecoration.none;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 100.0,
+      height: 100,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Row(
             children: [
               Container(
-                width: 5,
-                color: groceryItem.color,
+                width: 5.0,
+                color: item.color,
               ),
-              const SizedBox(
-                width: 16,
-              ),
+              const SizedBox(width: 16.0),
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-// 5
                   Text(
-                    groceryItem.name,
+                    item.name,
                     style: GoogleFonts.lato(
                       decoration: textDecoration,
                       fontSize: 21.0,
@@ -55,16 +52,14 @@ class GroceryTile extends StatelessWidget {
           ),
           Row(
             children: [
-              // 7
               Text(
-                groceryItem.quantity.toString(),
+                item.quantity.toString(),
                 style: GoogleFonts.lato(
                   decoration: textDecoration,
-                  fontSize: 21.0,
+                  fontSize: 21,
                 ),
               ),
-// 8
-              buildCheckbox(),
+              buildCheckbox()
             ],
           ),
         ],
@@ -73,51 +68,43 @@ class GroceryTile extends StatelessWidget {
   }
 
   Widget buildImportance() {
-    switch (groceryItem.importance) {
-      case Importance.low:
-        return Text(
-          'Low',
-          style: GoogleFonts.lato(
-            decoration: textDecoration,
-          ),
-        );
-
-      case Importance.medium:
-        return Text(
-          'Medium',
-          style: GoogleFonts.lato(
-            fontWeight: FontWeight.w800,
-            decoration: textDecoration,
-          ),
-        );
-
-      case Importance.high:
-        return Text(
-          'High',
-          style: GoogleFonts.lato(
-            color: Colors.red,
-            fontWeight: FontWeight.w900,
-            decoration: textDecoration,
-          ),
-        );
-
-      default:
-        throw Exception('This Item doesn\'t exist');
+    if (item.importance == Importance.low) {
+      return Text(
+        'Low',
+        style: GoogleFonts.lato(decoration: textDecoration),
+      );
+    } else if (item.importance == Importance.medium) {
+      return Text(
+        'Medium',
+        style: GoogleFonts.lato(
+            fontWeight: FontWeight.w800, decoration: textDecoration),
+      );
+    } else if (item.importance == Importance.high) {
+      return Text(
+        'High',
+        style: GoogleFonts.lato(
+          color: Colors.red,
+          fontWeight: FontWeight.w900,
+          decoration: textDecoration,
+        ),
+      );
+    } else {
+      throw Exception('This importance type does not exist');
     }
   }
 
   Widget buildDate() {
     final dateFormatter = DateFormat('MMMM dd h:mm a');
-    final stringDate = dateFormatter.format(groceryItem.date);
+    final dateString = dateFormatter.format(item.date);
     return Text(
-      stringDate,
+      dateString,
       style: TextStyle(decoration: textDecoration),
     );
   }
 
   Widget buildCheckbox() {
     return Checkbox(
-      value: groceryItem.isComplete,
+      value: item.isComplete,
       onChanged: onComplete,
     );
   }
