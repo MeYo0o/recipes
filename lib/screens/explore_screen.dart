@@ -5,9 +5,9 @@ import '../components/components.dart';
 import '../models/models.dart';
 
 class ExploreScreen extends StatelessWidget {
-  ExploreScreen({super.key});
-
   final mockService = MockFooderlichService();
+
+  ExploreScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

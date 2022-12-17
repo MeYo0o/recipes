@@ -15,7 +15,10 @@ void main() async {
 class Fooderlich extends StatefulWidget {
   final AppStateManager appStateManager;
 
-  const Fooderlich({super.key, required this.appStateManager});
+  const Fooderlich({
+    super.key,
+    required this.appStateManager,
+  });
 
   @override
   FooderlichState createState() => FooderlichState();
@@ -54,6 +57,7 @@ class FooderlichState extends State<Fooderlich> {
           }
 
           final router = _appRouter.router;
+
           return MaterialApp.router(
             theme: theme,
             title: 'Fooderlich',

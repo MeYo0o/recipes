@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
 
-import '../models/app_state_manager.dart';
 import 'explore_screen.dart';
 import 'grocery_screen.dart';
 import 'recipes_screen.dart';
+
+import 'package:provider/provider.dart';
+import '../models/models.dart';
 
 class Home extends StatefulWidget {
   const Home({
@@ -43,8 +44,7 @@ class HomeState extends State<Home> {
         selectedItemColor: Theme.of(context).textSelectionTheme.selectionColor,
         currentIndex: widget.currentTab,
         onTap: (index) {
-          context.read<AppStateManager>().goToTab(index);
-
+          Provider.of<AppStateManager>(context, listen: false).goToTab(index);
           context.goNamed(
             'home',
             params: {
@@ -83,7 +83,9 @@ class HomeState extends State<Home> {
         onTap: () {
           context.goNamed(
             'profile',
-            params: {'tab': '$currentTab'},
+            params: {
+              'tab': '$currentTab',
+            },
           );
         },
       ),
