@@ -1,18 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import '../models/app_state_manager.dart';
+import '../models/models.dart';
 
 class LoginScreen extends StatelessWidget {
+  final String? username;
+
   const LoginScreen({
     super.key,
     this.username,
   });
 
-  //page route
-  static const String route = '/login';
-
-  final String? username;
   final Color rwColor = const Color.fromRGBO(64, 143, 77, 1);
   final TextStyle focusedStyle = const TextStyle(color: Colors.green);
   final TextStyle unfocusedStyle = const TextStyle(color: Colors.grey);
@@ -25,7 +22,7 @@ class LoginScreen extends StatelessWidget {
         child: Center(
           child: ListView(
             keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-            padding: const EdgeInsets.only(top: 200.0),
+            padding: const EdgeInsets.only(top: 44.0),
             children: [
               const SizedBox(
                 height: 200,
@@ -61,10 +58,8 @@ class LoginScreen extends StatelessWidget {
           style: TextStyle(color: Colors.white),
         ),
         onPressed: () async {
-          context.read<AppStateManager>().login(
-                'username',
-                'password',
-              );
+          Provider.of<AppStateManager>(context, listen: false)
+            .login('mockUsername', 'mockPassword');
         },
       ),
     );

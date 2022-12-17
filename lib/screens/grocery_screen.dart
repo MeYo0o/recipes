@@ -18,7 +18,7 @@ class GroceryScreen extends StatelessWidget {
             'item',
             params: {
               'tab': '${FooderlichTab.toBuy}',
-              'id': 'New',
+              'id': 'new',
             },
           );
         },
