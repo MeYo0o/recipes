@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+
+import '../models/app_state_manager.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
+
+  //page route
+  static const String route = '/onboarding';
 
   @override
   OnboardingScreenState createState() => OnboardingScreenState();
@@ -39,7 +45,7 @@ class OnboardingScreenState extends State<OnboardingScreen> {
         MaterialButton(
           child: const Text('Skip'),
           onPressed: () {
-            // TODO: Initiate onboarding
+            context.read<AppStateManager>().onboarded();
           },
         ),
       ],
