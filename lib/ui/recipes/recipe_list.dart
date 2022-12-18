@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import '../colors.dart';
 import '../widgets/custom_dropdown.dart';
 
 class RecipeList extends StatefulWidget {
@@ -26,35 +26,33 @@ class _RecipeListState extends State<RecipeList> {
   bool loading = false;
   bool inErrorState = false;
   List<String> previousSearches = <String>[];
-
   // TODO: Add _currentRecipes1
 
   @override
   void initState() {
     super.initState();
     // TODO: Call loadRecipes()
-
     getPreviousSearches();
-
     searchTextController = TextEditingController(text: '');
-    _scrollController.addListener(() {
-      final triggerFetchMoreSize =
-          0.7 * _scrollController.position.maxScrollExtent;
+    _scrollController
+      .addListener(() {
+        final triggerFetchMoreSize =
+            0.7 * _scrollController.position.maxScrollExtent;
 
-      if (_scrollController.position.pixels > triggerFetchMoreSize) {
-        if (hasMore &&
-            currentEndPosition < currentCount &&
-            !loading &&
-            !inErrorState) {
-          setState(() {
-            loading = true;
-            currentStartPosition = currentEndPosition;
-            currentEndPosition =
-                min(currentStartPosition + pageCount, currentCount);
-          });
+        if (_scrollController.position.pixels > triggerFetchMoreSize) {
+          if (hasMore &&
+              currentEndPosition < currentCount &&
+              !loading &&
+              !inErrorState) {
+            setState(() {
+              loading = true;
+              currentStartPosition = currentEndPosition;
+              currentEndPosition =
+                  min(currentStartPosition + pageCount, currentCount);
+            });
+          }
         }
-      }
-    });
+      });
   }
 
   // TODO: Add loadRecipes
@@ -65,17 +63,20 @@ class _RecipeListState extends State<RecipeList> {
     super.dispose();
   }
 
-  Future<void> savePreviousSearches() async {
+  void savePreviousSearches() async {
     final prefs = await SharedPreferences.getInstance();
     prefs.setStringList(prefSearchKey, previousSearches);
   }
 
-  Future<void> getPreviousSearches() async {
+  void getPreviousSearches() async {
     final prefs = await SharedPreferences.getInstance();
-    final searches = prefs.getStringList(prefSearchKey);
-
-    if (searches != null) {
-      previousSearches = searches;
+    if (prefs.containsKey(prefSearchKey)) {
+      final searches = prefs.getStringList(prefSearchKey);
+      if (searches != null) {
+        previousSearches = searches;
+      } else {
+        previousSearches = <String>[];
+      }
     }
   }
 
@@ -104,51 +105,56 @@ class _RecipeListState extends State<RecipeList> {
         padding: const EdgeInsets.all(4.0),
         child: Row(
           children: [
-            // Replace
-            const Icon(Icons.search),
+            IconButton(
+              icon: const Icon(Icons.search),
+              onPressed: () {
+                startSearch(searchTextController.text);
+                final currentFocus = FocusScope.of(context);
+                if (!currentFocus.hasPrimaryFocus) {
+                  currentFocus.unfocus();
+                }
+              },
+            ),
             const SizedBox(
               width: 6.0,
             ),
             Expanded(
               child: Row(
-                children: [
+                children: <Widget>[
                   Expanded(
-                    child: TextField(
-                      controller: searchTextController,
-                      decoration: const InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'Search',
-                      ),
-                      autofocus: false,
-                      textInputAction: TextInputAction.done,
-                      onSubmitted: (value) => startSearch(value),
-                    ),
-                  ),
+                      child: TextField(
+                    decoration: const InputDecoration(
+                        border: InputBorder.none, hintText: 'Search'),
+                    autofocus: false,
+                    textInputAction: TextInputAction.done,
+                    onSubmitted: (value) {
+                      startSearch(searchTextController.text);
+                    },
+                    controller: searchTextController,
+                  )),
                   PopupMenuButton<String>(
                     icon: const Icon(
                       Icons.arrow_drop_down,
-                      color: Colors.grey,
+                      color: lightGrey,
                     ),
-                    onSelected: (value) {
+                    onSelected: (String value) {
                       searchTextController.text = value;
-                      startSearch(value);
+                      startSearch(searchTextController.text);
                     },
-                    itemBuilder: (context) {
+                    itemBuilder: (BuildContext context) {
                       return previousSearches
-                          .map<CustomDropdownMenuItem<String>>(
-                            (e) => CustomDropdownMenuItem<String>(
-                              value: e,
-                              text: e,
-                              callback: () {
-                                setState(() {
-                                  previousSearches.remove(e);
-                                  savePreviousSearches();
-                                  Navigator.of(context).pop();
-                                });
-                              },
-                            ),
-                          )
-                          .toList();
+                          .map<CustomDropdownMenuItem<String>>((String value) {
+                        return CustomDropdownMenuItem<String>(
+                          text: value,
+                          value: value,
+                          callback: () {
+                            setState(() {
+                              previousSearches.remove(value);
+                              Navigator.pop(context);
+                            });
+                          },
+                        );
+                      }).toList();
                     },
                   ),
                 ],
@@ -168,25 +174,21 @@ class _RecipeListState extends State<RecipeList> {
       currentStartPosition = 0;
       hasMore = true;
       value = value.trim();
+      if (!previousSearches.contains(value)) {
+        previousSearches.add(value);
+        savePreviousSearches();
+      }
     });
-
-    if (!previousSearches.contains(value)) {
-      previousSearches.add(value);
-
-      savePreviousSearches();
-    }
   }
 
+  // TODO: Replace method
   Widget _buildRecipeLoader(BuildContext context) {
-    return IconButton(
-      icon: const Icon(Icons.search),
-      onPressed: () {
-        startSearch(searchTextController.text);
-        final currentFocus = FocusScope.of(context);
-        if (!currentFocus.hasPrimaryFocus) {
-          currentFocus.unfocus();
-        }
-      },
+    if (searchTextController.text.length < 3) {
+      return Container();
+    }
+    // Show a loading indicator while waiting for the movies
+    return const Center(
+      child: CircularProgressIndicator(),
     );
   }
 

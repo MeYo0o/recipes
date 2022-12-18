@@ -87,7 +87,7 @@ class _MyRecipesListState extends State<MyRecipesList> {
                   ),
                 ),
               ),
-             ),
+            ),
           );
         });
     // TODO 9
