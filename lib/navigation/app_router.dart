@@ -33,7 +33,10 @@ class AppRouter {
         name: 'home',
         path: '/:tab',
         builder: (context, state) {
-          final tab = int.tryParse(state.params['tab'] ?? '') ?? 0;
+          var tab = int.tryParse(state.params['tab'] ?? '') ?? 0;
+          if (tab > 2) {
+            tab = 0;
+          }
           return Home(
             key: state.pageKey,
             currentTab: tab,
