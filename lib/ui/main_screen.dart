@@ -1,12 +1,12 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'colors.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'myrecipes/my_recipes_list.dart';
 import 'recipes/recipe_list.dart';
 import 'shopping/shopping_list.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -29,27 +29,27 @@ class _MainScreenState extends State<MainScreen> {
     getCurrentIndex();
   }
 
-  Future<void> saveCurrentIndex() async {
+  void saveCurrentIndex() async {
     final prefs = await SharedPreferences.getInstance();
     prefs.setInt(prefSelectedIndexKey, _selectedIndex);
   }
 
-  Future<void> getCurrentIndex() async {
+  void getCurrentIndex() async {
     final prefs = await SharedPreferences.getInstance();
-    final index = prefs.getInt(prefSelectedIndexKey);
-
-    if (index != null) {
+    if (prefs.containsKey(prefSelectedIndexKey)) {
       setState(() {
-        _selectedIndex = index;
+        final index = prefs.getInt(prefSelectedIndexKey);
+        if (index != null) {
+          _selectedIndex = index;
+        }
       });
     }
   }
 
-  void _onItemTapped(int index) async {
+  void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
-    await Future.delayed(const Duration(milliseconds: 300));
     saveCurrentIndex();
   }
 
