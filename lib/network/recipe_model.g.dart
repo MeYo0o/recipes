@@ -37,15 +37,15 @@ Map<String, dynamic> _$APIHitsToJson(APIHits instance) => <String, dynamic>{
     };
 
 APIRecipe _$APIRecipeFromJson(Map<String, dynamic> json) => APIRecipe(
-      image: json['image'] as String,
       label: json['label'] as String,
+      image: json['image'] as String,
       url: json['url'] as String,
-      calories: (json['calories'] as num).toDouble(),
       ingredients: (json['ingredients'] as List<dynamic>)
           .map((e) => APIIngredients.fromJson(e as Map<String, dynamic>))
           .toList(),
-      totalTime: (json['totalTime'] as num).toDouble(),
+      calories: (json['calories'] as num).toDouble(),
       totalWeight: (json['totalWeight'] as num).toDouble(),
+      totalTime: (json['totalTime'] as num).toDouble(),
     );
 
 Map<String, dynamic> _$APIRecipeToJson(APIRecipe instance) => <String, dynamic>{

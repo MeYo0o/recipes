@@ -3,8 +3,8 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../../network/recipe_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../colors.dart';
 import '../recipe_card.dart';
 import '../widgets/custom_dropdown.dart';
@@ -22,6 +22,8 @@ class _RecipeListState extends State<RecipeList> {
 
   late TextEditingController searchTextController;
   final ScrollController _scrollController = ScrollController();
+
+  // TODO: Replace with new API class
   List currentSearchList = [];
   int currentCount = 0;
   int currentStartPosition = 0;
@@ -36,32 +38,36 @@ class _RecipeListState extends State<RecipeList> {
   @override
   void initState() {
     super.initState();
+    // TODO: Remove call to loadRecipes()
     loadRecipes();
     getPreviousSearches();
     searchTextController = TextEditingController(text: '');
-    _scrollController.addListener(() {
-      final triggerFetchMoreSize =
-          0.7 * _scrollController.position.maxScrollExtent;
+    _scrollController
+      .addListener(() {
+        final triggerFetchMoreSize =
+            0.7 * _scrollController.position.maxScrollExtent;
 
-      if (_scrollController.position.pixels > triggerFetchMoreSize) {
-        if (hasMore &&
-            currentEndPosition < currentCount &&
-            !loading &&
-            !inErrorState) {
-          setState(() {
-            loading = true;
-            currentStartPosition = currentEndPosition;
-            currentEndPosition =
-                min(currentStartPosition + pageCount, currentCount);
-          });
+        if (_scrollController.position.pixels > triggerFetchMoreSize) {
+          if (hasMore &&
+              currentEndPosition < currentCount &&
+              !loading &&
+              !inErrorState) {
+            setState(() {
+              loading = true;
+              currentStartPosition = currentEndPosition;
+              currentEndPosition =
+                  min(currentStartPosition + pageCount, currentCount);
+            });
+          }
         }
-      }
-    });
+      });
   }
 
-  Future<void> loadRecipes() async {
-    final jsonString = await rootBundle.loadString('assets/recipes1.json');
+  // TODO: Add getRecipeData() here
 
+  // TODO: Delete loadRecipes()
+  Future loadRecipes() async {
+    final jsonString = await rootBundle.loadString('assets/recipes1.json');
     setState(() {
       _currentRecipes1 = APIRecipeQuery.fromJson(jsonDecode(jsonString));
     });
@@ -160,6 +166,7 @@ class _RecipeListState extends State<RecipeList> {
                           callback: () {
                             setState(() {
                               previousSearches.remove(value);
+                              savePreviousSearches();
                               Navigator.pop(context);
                             });
                           },
@@ -191,39 +198,32 @@ class _RecipeListState extends State<RecipeList> {
     });
   }
 
+  // TODO: Replace this _buildRecipeLoader definition
   Widget _buildRecipeLoader(BuildContext context) {
     if (_currentRecipes1 == null || _currentRecipes1?.hits == null) {
       return Container();
     }
-    return Flexible(
-      child: ListView.builder(
-        itemCount: _currentRecipes1!.hits.length,
-        itemBuilder: (context, index) => Center(
-          child: _buildRecipeCard(
-            topLevelContext: context,
-            hits: _currentRecipes1!.hits,
-            index: index,
-          ),
-        ),
-      ),
+    // Show a loading indicator while waiting for the recipes
+    return Center(
+      child: _buildRecipeCard(context, _currentRecipes1!.hits, 0),
     );
   }
 
-  Widget _buildRecipeCard({
-    required BuildContext topLevelContext,
-    required List<APIHits> hits,
-    required int index,
-  }) {
+  // TODO: Add _buildRecipeList()
+
+  Widget _buildRecipeCard(
+      BuildContext topLevelContext, List<APIHits> hits, int index) {
     final recipe = hits[index].recipe;
     return GestureDetector(
-      child: recipeStringCard(recipe.image, recipe.label),
       onTap: () {
-        Navigator.of(topLevelContext).push(
-          MaterialPageRoute(
-            builder: (context) => const RecipeDetails(),
-          ),
-        );
+        Navigator.push(topLevelContext, MaterialPageRoute(
+          builder: (context) {
+            return const RecipeDetails();
+          },
+        ));
       },
+      // TODO: Replace with recipeCard
+      child: recipeStringCard(recipe.image, recipe.label),
     );
   }
 }
