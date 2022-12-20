@@ -101,23 +101,34 @@ class _RecipeListState extends State<RecipeList> {
   Widget build(BuildContext context) {
     return Container(
       color: Colors.white,
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              _buildSearchCard(),
-              RefreshIndicator(
-                onRefresh: () async {
-                  await getRecipeData(
-                    query: searchTextController.text,
-                    from: currentStartPosition,
-                    to: currentEndPosition,
-                  );
-                },
-                child: _buildRecipeLoader(context),
-              ),
-            ],
+      child: RefreshIndicator(
+        onRefresh: () async {
+          setState(() {
+            currentSearchList.clear();
+            currentCount = 0;
+            currentStartPosition = 0;
+            currentEndPosition = 20;
+            pageCount = 20;
+            hasMore = false;
+            loading = false;
+            inErrorState = false;
+          });
+          await getRecipeData(
+            query: searchTextController.text,
+            from: currentStartPosition,
+            to: currentEndPosition,
+          );
+        },
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                _buildSearchCard(),
+                _buildRecipeLoader(context),
+              ],
+            ),
           ),
         ),
       ),
