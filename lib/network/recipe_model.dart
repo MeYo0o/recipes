@@ -96,3 +96,5 @@ class APIIngredients {
 
   Map<String, dynamic> toJson() => _$APIIngredientsToJson(this);
 }
+
+// TODO: Add convertIngredients() here
