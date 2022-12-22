@@ -3,12 +3,13 @@ import 'dart:math';
 
 import 'package:chopper/chopper.dart';
 import 'package:flutter/material.dart';
+import '../../network/recipe_service.dart';
+import '../../data/models/recipe.dart';
 import '../widgets/custom_dropdown.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../network/model_response.dart';
 import '../../network/recipe_model.dart';
-import '../../network/recipe_service.dart';
 import '../recipe_card.dart';
 import '../recipes/recipe_details.dart';
 import '../colors.dart';
@@ -191,10 +192,15 @@ class _RecipeListState extends State<RecipeList> {
       return Container();
     }
     return FutureBuilder<Response<Result<APIRecipeQuery>>>(
+      //real api
       future: RecipeService.create().queryRecipes(
-          searchTextController.text.trim(),
-          currentStartPosition,
-          currentEndPosition),
+        //mock api
+        // future:
+        //Provider.of<MockService>(context, listen: false).queryRecipes(
+        searchTextController.text.trim(),
+        currentStartPosition,
+        currentEndPosition,
+      ),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.hasError) {
@@ -282,7 +288,16 @@ class _RecipeListState extends State<RecipeList> {
           topLevelContext,
           MaterialPageRoute(
             builder: (context) {
-              return const RecipeDetails();
+              return RecipeDetails(
+                recipe: Recipe(
+                  label: recipe.label,
+                  image: recipe.image,
+                  url: recipe.url,
+                  calories: recipe.calories,
+                  totalTime: recipe.totalTime,
+                  totalWeight: recipe.totalTime,
+                )..ingredients = convertIngredients(recipe.ingredients),
+              );
             },
           ),
         );
