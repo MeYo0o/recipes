@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
 
-import '../../data/memory_repository.dart';
 import '../../data/models/recipe.dart';
+import '../../data/repository.dart';
 
 class MyRecipesList extends StatefulWidget {
   const MyRecipesList({Key? key}) : super(key: key);
@@ -25,9 +25,17 @@ class _MyRecipesListState extends State<MyRecipesList> {
   }
 
   Widget _buildRecipeList(BuildContext context) {
-    return Consumer<MemoryRepository>(
-      builder: (context, repository, child) {
-        recipes = repository.findAllRecipes();
+    final repository = Provider.of<Repository>(context, listen: false);
+    return StreamBuilder<List<Recipe>>(
+      stream: repository.watchAllRecipes(),
+      builder: (context, AsyncSnapshot<List<Recipe>> snapshot) {
+        var recipes = [];
+        if (snapshot.connectionState == ConnectionState.active) {
+          recipes = snapshot.data ?? [];
+        } else {
+          return Container();
+        }
+
         return ListView.builder(
           itemCount: recipes.length,
           itemBuilder: (BuildContext context, int index) {
@@ -83,14 +91,14 @@ class _MyRecipesListState extends State<MyRecipesList> {
                       padding: const EdgeInsets.all(8.0),
                       child: ListTile(
                         leading:
-                        
-                        //mock api
-                        //  Image.asset(
-                        //   'assets/images/pizza_w700.png',
-                        //   height: 200,
-                        //   width: 200,
-                        // ),
-                        //real api
+
+                            //mock api
+                            //  Image.asset(
+                            //   'assets/images/pizza_w700.png',
+                            //   height: 200,
+                            //   width: 200,
+                            // ),
+                            //real api
                             CachedNetworkImage(
                           imageUrl: recipe.image ?? '',
                           height: 120,
@@ -110,7 +118,7 @@ class _MyRecipesListState extends State<MyRecipesList> {
     );
   }
 
-  void deleteRecipe(MemoryRepository repository, Recipe recipe) {
+  void deleteRecipe(Repository repository, Recipe recipe) {
     repository.deleteRecipe(recipe);
     setState(() {});
   }

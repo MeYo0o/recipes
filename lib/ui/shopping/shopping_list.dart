@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../data/memory_repository.dart';
+import '../../data/models/ingredient.dart';
+import '../../data/repository.dart';
 
 class ShoppingList extends StatefulWidget {
   const ShoppingList({Key? key}) : super(key: key);
@@ -15,9 +16,18 @@ class _ShoppingListState extends State<ShoppingList> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<MemoryRepository>(
-      builder: (context, repository, child) {
-        final ingredients = repository.findAllIngredients();
+    final repository = Provider.of<Repository>(context, listen: false);
+    return StreamBuilder<List<Ingredient>>(
+      stream: repository.watchAllIngredients(),
+      builder: (context, AsyncSnapshot<List<Ingredient>> snapshot) {
+        var ingredients = <Ingredient>[];
+
+        if (snapshot.connectionState == ConnectionState.active) {
+          ingredients = snapshot.data ?? [];
+        } else {
+          return Container();
+        }
+
         return ListView.builder(
           itemCount: ingredients.length,
           itemBuilder: (BuildContext context, int index) {
