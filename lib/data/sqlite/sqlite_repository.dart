@@ -48,7 +48,7 @@ class SqliteRepository extends Repository {
       // 3
       recipe.id = id;
       if (recipe.ingredients != null) {
-        for (var ingredient in recipe.ingredients!) {
+        for (final ingredient in recipe.ingredients!) {
 // 4
           ingredient.recipeId = id;
         }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import '../../data/models/ingredient.dart';
 import '../../data/repository.dart';
 
@@ -16,36 +15,35 @@ class _ShoppingListState extends State<ShoppingList> {
 
   @override
   Widget build(BuildContext context) {
-    final repository = Provider.of<Repository>(context, listen: false);
-    return StreamBuilder<List<Ingredient>>(
+    final repository = Provider.of<Repository>(context);
+    return StreamBuilder(
       stream: repository.watchAllIngredients(),
-      builder: (context, AsyncSnapshot<List<Ingredient>> snapshot) {
-        var ingredients = <Ingredient>[];
-
+      builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.active) {
-          ingredients = snapshot.data ?? [];
+          final ingredients = snapshot.data as List<Ingredient>?;
+          if (ingredients == null) {
+            return Container();
+          }
+          return ListView.builder(
+            itemCount: ingredients.length,
+            itemBuilder: (BuildContext context, int index) {
+              return CheckboxListTile(
+                value:
+                    checkBoxValues.containsKey(index) && checkBoxValues[index]!,
+                title: Text(ingredients[index].name ?? ''),
+                onChanged: (newValue) {
+                  if (newValue != null) {
+                    setState(() {
+                      checkBoxValues[index] = newValue;
+                    });
+                  }
+                },
+              );
+            },
+          );
         } else {
           return Container();
         }
-
-        return ListView.builder(
-          itemCount: ingredients.length,
-          itemBuilder: (BuildContext context, int index) {
-            final ingredient = ingredients[index];
-            return CheckboxListTile(
-              value:
-                  checkBoxValues.containsKey(index) && checkBoxValues[index]!,
-              title: Text(ingredient.name ?? ''),
-              onChanged: (newValue) {
-                if (newValue != null) {
-                  setState(() {
-                    checkBoxValues[index] = newValue;
-                  });
-                }
-              },
-            );
-          },
-        );
       },
     );
   }

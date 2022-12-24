@@ -1,6 +1,6 @@
 # recipe_finder
 
-Recipe Finder
+Starter Recipe Finder
 
 ## Getting Started
 

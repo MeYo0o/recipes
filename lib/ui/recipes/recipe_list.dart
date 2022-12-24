@@ -4,16 +4,16 @@ import 'dart:math';
 import 'package:chopper/chopper.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../data/models/recipe.dart';
-import '../../network/service_interface.dart';
 import '../widgets/custom_dropdown.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../data/models/models.dart';
 import '../../network/model_response.dart';
 import '../../network/recipe_model.dart';
+import '../../network/service_interface.dart';
+import '../colors.dart';
 import '../recipe_card.dart';
 import '../recipes/recipe_details.dart';
-import '../colors.dart';
 
 class RecipeList extends StatefulWidget {
   const RecipeList({Key? key}) : super(key: key);
@@ -52,12 +52,14 @@ class _RecipeListState extends State<RecipeList> {
             currentEndPosition < currentCount &&
             !loading &&
             !inErrorState) {
-          setState(() {
-            loading = true;
-            currentStartPosition = currentEndPosition;
-            currentEndPosition =
-                min(currentStartPosition + pageCount, currentCount);
-          });
+          setState(
+            () {
+              loading = true;
+              currentStartPosition = currentEndPosition;
+              currentEndPosition =
+                  min(currentStartPosition + pageCount, currentCount);
+            },
+          );
         }
       }
     });
@@ -130,7 +132,9 @@ class _RecipeListState extends State<RecipeList> {
                   Expanded(
                       child: TextField(
                     decoration: const InputDecoration(
-                        border: InputBorder.none, hintText: 'Search'),
+                      border: InputBorder.none,
+                      hintText: 'Search',
+                    ),
                     autofocus: false,
                     textInputAction: TextInputAction.done,
                     onSubmitted: (value) {
@@ -193,12 +197,10 @@ class _RecipeListState extends State<RecipeList> {
       return Container();
     }
     return FutureBuilder<Response<Result<APIRecipeQuery>>>(
-      //for both real & mock api
       future: Provider.of<ServiceInterface>(context).queryRecipes(
-        searchTextController.text.trim(),
-        currentStartPosition,
-        currentEndPosition,
-      ),
+          searchTextController.text.trim(),
+          currentStartPosition,
+          currentEndPosition),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.hasError) {
@@ -270,35 +272,41 @@ class _RecipeListState extends State<RecipeList> {
           childAspectRatio: (itemWidth / itemHeight),
         ),
         itemCount: hits.length,
-        itemBuilder: (BuildContext context, int index) {
-          return _buildRecipeCard(recipeListContext, hits, index);
+        itemBuilder: (
+          BuildContext context,
+          int index,
+        ) {
+          return _buildRecipeCard(
+            recipeListContext,
+            hits,
+            index,
+          );
         },
       ),
     );
   }
 
   Widget _buildRecipeCard(
-      BuildContext topLevelContext, List<APIHits> hits, int index) {
+    BuildContext topLevelContext,
+    List<APIHits> hits,
+    int index,
+  ) {
     final recipe = hits[index].recipe;
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-          topLevelContext,
-          MaterialPageRoute(
-            builder: (context) {
-              return RecipeDetails(
-                recipe: Recipe(
-                  label: recipe.label,
-                  image: recipe.image,
-                  url: recipe.url,
-                  calories: recipe.calories,
-                  totalTime: recipe.totalTime,
-                  totalWeight: recipe.totalTime,
-                )..ingredients = convertIngredients(recipe.ingredients),
-              );
-            },
-          ),
-        );
+        Navigator.push(topLevelContext, MaterialPageRoute(
+          builder: (context) {
+            final detailRecipe = Recipe(
+                label: recipe.label,
+                image: recipe.image,
+                url: recipe.url,
+                calories: recipe.calories,
+                totalTime: recipe.totalTime,
+                totalWeight: recipe.totalWeight);
+            detailRecipe.ingredients = convertIngredients(recipe.ingredients);
+            return RecipeDetails(recipe: detailRecipe);
+          },
+        ));
       },
       child: recipeCard(recipe),
     );

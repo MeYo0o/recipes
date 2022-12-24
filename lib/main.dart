@@ -3,8 +3,10 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
-import 'data/sqlite/sqlite_repository.dart';
 
+// import 'data/memory_repository.dart';
+// import 'data/sqlite/sqlite_repository.dart';
+import 'data/moor/moor_repository.dart';
 import 'data/repository.dart';
 import 'network/recipe_service.dart';
 import 'network/service_interface.dart';
@@ -13,23 +15,28 @@ import 'ui/main_screen.dart';
 Future<void> main() async {
   _setupLogging();
   WidgetsFlutterBinding.ensureInitialized();
-  final repository = SqliteRepository();
+  // final repository = SqliteRepository();
+  final repository = MoorRepository();
   await repository.init();
-  runApp(MyApp(
-    repository: repository,
-  ));
+  runApp(MyApp(repository: repository));
 }
 
 void _setupLogging() {
   Logger.root.level = Level.ALL;
-  Logger.root.onRecord.listen((rec) {
-    log('${rec.level.name}: ${rec.time}: ${rec.message}');
-  });
+  Logger.root.onRecord.listen(
+    (rec) {
+      log('${rec.level.name}: ${rec.time}: ${rec.message}');
+    },
+  );
 }
 
 class MyApp extends StatelessWidget {
   final Repository repository;
-  const MyApp({Key? key, required this.repository}) : super(key: key);
+
+  const MyApp({
+    Key? key,
+    required this.repository,
+  }) : super(key: key);
 
   // This widget is the root of your application.
   @override
@@ -38,16 +45,13 @@ class MyApp extends StatelessWidget {
       providers: [
         Provider<Repository>(
           lazy: false,
-          // create: (_) => MemoryRepository(),
           create: (_) => repository,
-          dispose: (_, repository) => repository.close(),
+          dispose: (_, Repository repository) => repository.close(),
         ),
         Provider<ServiceInterface>(
-          lazy: false,
-          //Real API
-          create: (_) => RecipeService.create(),
-          //Mock Service
           // create: (_) => MockService()..create(),
+          create: (_) => RecipeService.create(),
+          lazy: false,
         ),
       ],
       child: MaterialApp(

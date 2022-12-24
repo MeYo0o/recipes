@@ -1,9 +1,8 @@
-// ignore_for_file: must_be_immutable
-
 import 'package:equatable/equatable.dart';
 
 import 'ingredient.dart';
 
+// ignore: must_be_immutable
 class Recipe extends Equatable {
   int? id;
   final String? label;
@@ -25,36 +24,29 @@ class Recipe extends Equatable {
   });
 
   @override
-  List<Object?> get props => [
-        label,
-        image,
-        url,
-        calories,
-        totalWeight,
-        totalTime,
-      ];
+  List<Object?> get props =>
+      [label, image, url, calories, totalWeight, totalTime];
 
-  factory Recipe.fromJson(Map<String, dynamic> json) {
-    return Recipe(
-      id: json['recipeId'],
-      label: json['label'],
-      image: json['image'],
-      url: json['url'],
-      calories: json['calories'],
-      totalWeight: json['totalWeight'],
-      totalTime: json['totalTime'],
-    );
-  }
+  // Create a Recipe from JSON data
+  factory Recipe.fromJson(Map<String, dynamic> json) => Recipe(
+        id: json['recipeId'],
+        label: json['label'],
+        image: json['image'],
+        url: json['url'],
+        calories: json['calories'],
+        totalWeight: json['totalWeight'],
+        totalTime: json['totalTime'],
+      );
 
-  Map<String, dynamic> toJson() {
-    return {
-      'recipeId': id,
-      'label': label,
-      'image': image,
-      'url': url,
-      'calories': calories,
-      'totalWeight': totalWeight,
-      'totalTime': totalTime,
-    };
-  }
+  // Convert our Recipe to JSON to make it easier
+  // when we store it in the database
+  Map<String, dynamic> toJson() => {
+        'recipeId': id,
+        'label': label,
+        'image': image,
+        'url': url,
+        'calories': calories,
+        'totalWeight': totalWeight,
+        'totalTime': totalTime,
+      };
 }

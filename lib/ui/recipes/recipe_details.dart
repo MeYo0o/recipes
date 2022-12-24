@@ -30,16 +30,6 @@ class RecipeDetails extends StatelessWidget {
               children: <Widget>[
                 Stack(
                   children: [
-                    //mock api
-                    // Align(
-                    //   alignment: Alignment.topCenter,
-                    //   child: Image.asset(
-                    //     'assets/images/pizza_w700.png',
-                    //     height: 200,
-                    //     width: 200,
-                    //   ),
-                    // ),
-                    //real api
                     Align(
                       alignment: Alignment.topLeft,
                       child: CachedNetworkImage(
@@ -82,7 +72,9 @@ class RecipeDetails extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(left: 16.0),
                   child: Chip(
-                    label: Text(getCalories(recipe.calories)),
+                    label: Text(
+                      getCalories(recipe.calories),
+                    ),
                   ),
                 ),
                 const SizedBox(
