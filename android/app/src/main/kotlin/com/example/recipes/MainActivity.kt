@@ -1,4 +1,4 @@
-package com.meyo-dev.recipes
+package com.meyo-dev.chatapp
 
 import io.flutter.embedding.android.FlutterActivity
 
