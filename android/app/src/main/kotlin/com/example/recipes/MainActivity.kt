@@ -1,4 +1,4 @@
-package com.meyo-dev.chatapp
+package com.meyo.meyochat
 
 import io.flutter.embedding.android.FlutterActivity
 

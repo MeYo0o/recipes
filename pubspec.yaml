@@ -1,4 +1,4 @@
-name: MeYoChat
+name: meyochat
 description: A reactive chat application fueled by a Firebase Firestore.
 publish_to: "none"
 
