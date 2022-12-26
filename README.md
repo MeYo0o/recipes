@@ -1,4 +1,4 @@
-# recipes
+# MeYoChat
 
 A new Flutter project.
 

@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "1034610528341",
+    "project_id": "chat-app-kodeco",
+    "storage_bucket": "chat-app-kodeco.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1034610528341:android:e5e257a4c31195c199c4dc",
+        "android_client_info": {
+          "package_name": "com.meyo.meyochat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1034610528341-q3hpmmj55am3gec7etlb784e9l9lpe77.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyACi2Mbw-w1WV7faDssOayJaFAkqYsf2co"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1034610528341-q3hpmmj55am3gec7etlb784e9l9lpe77.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1034610528341-b7bh15i5mlbsleh7dvlm5itcl5oorplf.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.raywenderlich.RayChat"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -5,18 +5,18 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "recipes",
+            "name": "meyochat",
             "request": "launch",
             "type": "dart"
         },
         {
-            "name": "recipes (profile mode)",
+            "name": "meyochat (profile mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "profile"
         },
         {
-            "name": "recipes (release mode)",
+            "name": "meyochat (release mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "release"
