@@ -30,6 +30,11 @@ flutter_ios_podfile_setup
 target 'Runner' do
   use_frameworks!
   use_modular_headers!
+  def firebase_sdk_version!()
+    '10.3.0'
+  end
+
+  pod 'FirebaseFirestore', :git => 'https://github.com/invertase/firestore-ios-sdk-frameworks.git', :tag => '10.3.0'
 
   flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
 end
